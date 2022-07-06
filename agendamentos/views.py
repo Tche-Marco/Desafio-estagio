@@ -1,4 +1,4 @@
-import code
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Horario, Usuario
@@ -12,16 +12,19 @@ def horarios(request):
   usuario = request.user
   hor_disp = []
   hor_agendados = []
-  horarios = Horario.objects.all()
+  horarios = Horario.objects.order_by('dataInicio')
 
   if usuario.is_authenticated:            
       usuario = Usuario.objects.get(usuario=usuario)  
 
   for h in horarios:
-    if not h.cliente:
-      hor_disp.append(h)    
-    else:
-      hor_agendados.append(h) 
+    if h.qtVagas >= 1:
+      if not h.cliente:
+        hor_disp.append(h)    
+      else:
+        hor_agendados.append(h) 
+
+  
 
   return render(request, 'agendamentos/horarios.html', {'horarios_agendados' : hor_agendados,'horarios_disp' : hor_disp, 'usuario' : usuario})
 
@@ -29,17 +32,30 @@ def horarios(request):
 def horario(request, pk):
   usuario = request.user
   horario = Horario.objects.get(id=pk)
-
+  horarios_cod = Horario.objects.filter(cod=horario.cod)
   if usuario.is_authenticated:            
-      usuario = Usuario.objects.get(usuario=usuario)  
+    usuario = Usuario.objects.get(usuario=usuario)  
+    if usuario.tipo_usuario == 'C':
+      if not horario.cliente:
+        horario.cliente=usuario
+        horario.save()
+        for h in horarios_cod:
+          h.qtVagas-=1
+          h.save() 
+        return HttpResponseRedirect(reverse('horarios_user'))
+      else:
+        horario.cliente=None  
+        horario.save()
+        for h in horarios_cod:
+          h.qtVagas+=1
+          h.save()   
+        return HttpResponseRedirect(reverse('horarios'))
+    else:
+      horario.delete()
+      return HttpResponseRedirect(reverse('horarios'))
+      # return render(request, 'agendamentos/horario.html', {'horario' : horario, 'usuario' : usuario})
       
-  return render(request, 'agendamentos/horario.html', {'horario' : horario, 'usuario' : usuario})
-
-'''class HorarioCreate(CreateView):
-  model = Horario
-  fields = ['dataInicio', 'dataFim', 'duracao', 'qtVagas']
-  template_name = 'agendamentos/cadastro.html'
-  success_url = reverse_lazy('horarios')'''
+    
 
 class CriaHorarioView(FormView):
 
@@ -80,3 +96,16 @@ class CriaHorarioView(FormView):
 
   def get_success_url(self):
         return reverse('horarios')
+
+def horarios_user(request):
+  usuario = request.user
+  horarios_user = []
+  horarios = Horario.objects.all()
+
+  if usuario.is_authenticated:            
+      usuario = Usuario.objects.get(usuario=usuario)  
+      for h in horarios:
+        if h.cliente == usuario:
+          horarios_user.append(h)    
+
+  return render(request, 'agendamentos/horarios_user.html', {'horarios_user' : horarios_user, 'usuario' : usuario})
