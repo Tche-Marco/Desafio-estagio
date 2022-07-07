@@ -1,5 +1,5 @@
 from django import forms
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 class CriaHorarioForm(forms.Form):
   dataInicio = forms.DateTimeField(label='Data inicial da agenda de atendimento', help_text='dia/mês/ano hora:minuto')
@@ -20,3 +20,13 @@ class CriaHorarioForm(forms.Form):
       self.add_error('duracao', 'Os atendimentos devem ter a duração maior que 1 minuto')
 
     return dados
+
+class SolicitaHorarioForm(forms.Form):
+  data_solicitada = forms.DateTimeField(label='Data que deseja marcar seu atendimento', help_text='dia/mês/ano hora:minuto')
+
+  # def clean(self):
+  #   dados = super().clean()
+  #   data = dados.get('data_solicitada')
+  #   if data < datetime.utcnow():
+  #     self.add_error('data_solicitada', 'A data solicitada não pode ser anterior à hoje')
+  #   return dados

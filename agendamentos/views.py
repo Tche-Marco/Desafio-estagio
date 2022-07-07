@@ -1,11 +1,11 @@
+from types import NoneType
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Horario, Usuario
-from django.views.generic.edit import CreateView
 from django.views.generic import FormView
-from .forms import CriaHorarioForm
-from datetime import datetime, timedelta
+from .forms import CriaHorarioForm, SolicitaHorarioForm
+from datetime import datetime, timedelta, date
 
 
 def horarios(request):
@@ -23,8 +23,6 @@ def horarios(request):
         hor_disp.append(h)    
       else:
         hor_agendados.append(h) 
-
-  
 
   return render(request, 'agendamentos/horarios.html', {'horarios_agendados' : hor_agendados,'horarios_disp' : hor_disp, 'usuario' : usuario})
 
@@ -53,9 +51,6 @@ def horario(request, pk):
     else:
       horario.delete()
       return HttpResponseRedirect(reverse('horarios'))
-      # return render(request, 'agendamentos/horario.html', {'horario' : horario, 'usuario' : usuario})
-      
-    
 
 class CriaHorarioView(FormView):
 
@@ -64,35 +59,33 @@ class CriaHorarioView(FormView):
 
   def get(self, request):
 
-          usuario = self.request.user
-          if usuario.is_authenticated:
-              usuario = Usuario.objects.get(usuario = usuario)
-          return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
+    usuario = self.request.user
+    if usuario.is_authenticated:
+        usuario = Usuario.objects.get(usuario = usuario)
+    return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
 
   def form_valid(self, form):
 
     usuario = self.request.user  
 
     if usuario.is_authenticated:
+      usuario = Usuario.objects.get(usuario = usuario)
+      dados = form.clean()
+      dataInicio=dados['dataInicio']
+      dataFim=dados['dataFim']
+      duracao=dados['duracao']
+      qtVagas=dados['qtVagas']
+      dataI=dataInicio
+      dataF=dataInicio+timedelta(minutes=duracao)
+      cod=int(datetime.utcnow().timestamp())
 
-            usuario = Usuario.objects.get(usuario = usuario)
-            dados = form.clean()
+      while dataF<=dataFim:
+        horario = Horario(criador=usuario, dataInicio=dataI, dataFim=dataF, duracao=duracao, qtVagas=qtVagas, cod=cod)
+        horario.save()
+        dataI=dataF
+        dataF=dataI+timedelta(minutes=duracao)
 
-            dataInicio=dados['dataInicio']
-            dataFim=dados['dataFim']
-            duracao=dados['duracao']
-            qtVagas=dados['qtVagas']
-            dataI=dataInicio
-            dataF=dataInicio+timedelta(minutes=duracao)
-            cod=int(datetime.utcnow().timestamp())
-
-            while dataF<=dataFim:
-              horario = Horario(criador=usuario, dataInicio=dataI, dataFim=dataF, duracao=duracao, qtVagas=qtVagas, cod=cod)
-              horario.save()
-              dataI=dataF
-              dataF=dataI+timedelta(minutes=duracao)
-         
-            return super().form_valid(form)
+      return super().form_valid(form)
 
   def get_success_url(self):
         return reverse('horarios')
@@ -100,7 +93,7 @@ class CriaHorarioView(FormView):
 def horarios_user(request):
   usuario = request.user
   horarios_user = []
-  horarios = Horario.objects.all()
+  horarios = Horario.objects.order_by('dataInicio')
 
   if usuario.is_authenticated:            
       usuario = Usuario.objects.get(usuario=usuario)  
@@ -109,3 +102,42 @@ def horarios_user(request):
           horarios_user.append(h)    
 
   return render(request, 'agendamentos/horarios_user.html', {'horarios_user' : horarios_user, 'usuario' : usuario})
+
+class SolicitaHorarioView(FormView):
+
+  template_name = 'agendamentos/data_solicitada.html'
+  form_class = SolicitaHorarioForm
+
+  def get(self, request):
+
+    usuario = self.request.user
+    if usuario.is_authenticated:
+        usuario = Usuario.objects.get(usuario = usuario)
+    return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
+
+  def form_valid(self, form):
+
+    usuario = self.request.user  
+    horarios = Horario.objects.order_by('dataInicio')
+    solicitacoes = []
+    sugestoes = []
+
+    if usuario.is_authenticated:
+      
+      usuario = Usuario.objects.get(usuario = usuario)
+      dados = form.clean()
+      data_solicitada=dados['data_solicitada']
+      sugestao = datetime(year=9999, month=1, day=1)
+      for h in horarios:
+        if h.dataInicio.date() == data_solicitada.date():
+          solicitacoes.append(h)
+        elif h.dataInicio.date() > data_solicitada.date():
+          if h.dataInicio.date() <= sugestao.date():
+            sugestao=h.dataInicio 
+            sugestoes.append(h)            
+
+      return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })
+
+
+         
+    # return super().form_valid(form)

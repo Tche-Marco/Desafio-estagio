@@ -28,18 +28,9 @@
           class="navbar-collapse offcanvas-collapse"
           id="navbarsExampleDefault"
         ></div>
-
-        {% if user.is_authenticated %}
         <a href="http://localhost:8000/logout"
           ><button class="btn btn-outline-light" type="submit">Sair</button></a
         >
-        {% else %}
-        <a href="http://localhost:8000/login"
-          ><button class="btn btn-outline-light" type="submit">
-            Fazer Login
-          </button></a
-        >
-        {% endif %}
       </div>
     </nav>
     <div class="nav-scroller bg-body shadow-sm">
@@ -100,13 +91,14 @@
 
           <a href="http://localhost:8000/horario/{{ h.id }}">
             <button
-              class="btn btn-outline-dark"
-              style="width: max-content; font-size: small"
               type="submit"
+              class="btn btn-outline-danger"
+              style="width: max-content; font-size: small"
             >
+              <i class="checkmark icon"></i>
               Deletar horário
-            </button></a
-          >
+            </button>
+          </a>
         </div>
         {% endfor %} {% else %}
         <div class="d-flex text-muted pt-3">Não há horários disponíveis</div>
@@ -176,7 +168,9 @@
         <a class="nav-link active" aria-current="page" href="#"
           >Horários de atendimento disponíveis</a
         >
-        <a class="nav-link" href="http://localhost:8000/horarios/user">Meus agendamentos</a>
+        <a class="nav-link" href="http://localhost:8000/horarios/user"
+          >Meus agendamentos</a
+        >
       </nav>
     </div>
 
@@ -196,6 +190,14 @@
           class="navbar-collapse offcanvas-collapse"
           id="navbarsExampleDefault"
         ></div>
+        <a href="http://localhost:8000/solicitacao">
+          <button
+            class="btn btn-outline-light"
+            style="padding: 0.31em; width: 10em; font-size: small"
+          >
+            Busca específica
+          </button>
+        </a>
       </div>
 
       <div class="my-3 p-3 bg-body rounded shadow-sm">
@@ -203,8 +205,7 @@
           Horários disponíveis
         </h6>
 
-        {% if horarios_disp %}
-        {% for h in horarios_disp %}
+        {% if horarios_disp %} {% for h in horarios_disp %}
         <div class="d-flex text-muted pt-3">
           <p class="pb-3 mb-0 small lh-sm" style="color: black">
             <strong
@@ -229,7 +230,7 @@
 
           <a href="http://localhost:8000/horario/{{ h.id }}">
             <button
-              class="btn btn-outline-dark"
+              class="btn btn-outline-success"
               style="width: max-content; font-size: small"
               type="submit"
             >
@@ -237,12 +238,10 @@
             </button></a
           >
         </div>
-        {% endfor %}
-        {% else %}
+        {% endfor %} {% else %}
         <div class="d-flex text-muted pt-3">Não há horários disponíveis</div>
-        {% endif %}
+        {% endif %} {% endif %}
       </div>
     </main>
-    {% endif %}
   </body>
 </html>
