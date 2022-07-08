@@ -17,95 +17,166 @@
     />
   </head>
   <body class="bg-light">
+
     {% if usuario.tipo_usuario == 'C' %}
-    <nav
-      class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
-      aria-label="Main navigation"
-    >
-      <div class="container-fluid">
-        <a class="navbar-brand">{{ usuario.nome }}</a>
-        <div
-          class="navbar-collapse offcanvas-collapse"
-          id="navbarsExampleDefault"
-        ></div>
 
-        <a href="http://localhost:8000/logout"
-          ><button class="btn btn-outline-light" type="submit">Sair</button></a
-        >
-      </div>
-    </nav>
-    <div class="nav-scroller bg-body shadow-sm">
-      <nav class="nav nav-underline" aria-label="Secondary navigation">
-        <a class="nav-link active" aria-current="page" href="#"
-          >Meus agendamentos</a
-        >
-        <a class="nav-link" href="http://localhost:8000/horarios"
-          >Horários de atendimento disponíveis</a
-        >
-      </nav>
-    </div>
-
-    <main class="container">
-      <div
-        class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm"
+      <nav
+        class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark"
+        aria-label="Main navigation"
       >
-        <div class="lh-1">
-          <h1
-            class="h6 mb-0 text-white lh-1"
-            style="width: max-content; font-size: large"
-          >
-            Horários de atendimento
-          </h1>
-        </div>
-        <div
-          class="navbar-collapse offcanvas-collapse"
-          id="navbarsExampleDefault"
-        ></div>
-      </div>
 
-      <div class="my-3 p-3 bg-body rounded shadow-sm">
-        <h6 class="border-bottom pb-2 mb-0" style="font-size: 1.29em">
-          Horários agendados
-        </h6>
-
-        {% if horarios_user %} {% for h in horarios_user %}
-        <div class="d-flex text-muted pt-3">
-          <p class="pb-3 mb-0 small lh-sm" style="color: black">
-            <strong
-              class="d-block text-gray-dark"
-              style="
-                text-decoration: none;
-                font-size: 1.036em;
-                font-weight: bolder;
-                width: 50em;
-                padding-bottom: 0.4em;
-              "
-            >
-              {{ h.dataInicio }}
-            </strong>
-            {{ h.duracao }} minutos de duração
-          </p>
+        <div class="container-fluid">
+          
+          <a class="navbar-brand">{{ usuario.nome }}</a>
 
           <div
             class="navbar-collapse offcanvas-collapse"
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://localhost:8000/horario/{{ h.id }}">
-            <button
-              class="btn btn-outline-danger"
-              style="width: max-content; font-size: small"
-              type="submit"
-            >
-              Desmarcar horário
-            </button></a
+          <a href="http://localhost:8000/logout"
+            ><button class="btn btn-outline-light" type="submit">Sair</button></a
           >
+
         </div>
-        {% endfor %} {% else %}
-        <div class="d-flex text-muted pt-3">Não há horários disponíveis</div>
-        {% endif %}
+
+      </nav>
+
+      <div class="nav-scroller bg-body shadow-sm">
+
+        <nav class="nav nav-underline" aria-label="Secondary navigation">
+
+          <a class="nav-link active" aria-current="page" href="#">
+            Meus agendamentos
+          </a>
+          <a class="nav-link" href="http://localhost:8000/horarios">
+            Horários de atendimento disponíveis
+          </a>
+
+        </nav>
+
       </div>
-    </main>
+
+      <main class="container">
+
+        <div
+          class="d-flex align-items-center p-3 my-3 text-white bg-purple rounded shadow-sm"
+        >
+
+          <div class="lh-1">
+
+            <h1
+              class="h6 mb-0 text-white lh-1"
+              style="width: max-content; font-size: large"
+            >
+              Horários de atendimento
+            </h1>
+
+          </div>
+
+        </div>
+
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+
+          <h6 class="border-bottom pb-2 mb-0" style="font-size: 1.29em">
+            Horários agendados
+          </h6>
+
+          {% if horarios_user %} 
+
+            {% for h in horarios_user %}
+
+              <div class="d-flex text-muted pt-3">
+
+                <p class="pb-3 mb-0 small lh-sm" style="color: black">
+                  <strong
+                    class="d-block text-gray-dark"
+                    style="
+                      text-decoration: none;
+                      font-size: 1.036em;
+                      font-weight: bolder;
+                      width: 50em;
+                      padding-bottom: 0.4em;
+                    "
+                  >
+                    {{ h.dataInicio }}
+                  </strong>
+
+                  {{ h.duracao }} minutos de duração
+
+                </p>
+
+                <div
+                  class="navbar-collapse offcanvas-collapse"
+                  id="navbarsExampleDefault"
+                ></div>
+
+                <a href="http://localhost:8000/horario/{{ h.id }}">
+
+                  <button
+                    class="btn btn-outline-danger"
+                    style="width: max-content; font-size: small"
+                    type="submit"
+                  >
+                    Desmarcar horário
+                  </button>
+
+                </a>
+
+              </div>
+
+            {% endfor %} 
+
+          {% else %}
+
+            <div class="d-flex text-muted pt-3">Não há horários disponíveis</div>
+
+          {% endif %}
+
+        </div>
+
+      </main>
+    
+    {% elif usuario.tipo_usuario == 'O' %}
+
+      <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;            
+      ">
+        <div style="text-align: center; padding-block: 10%;">
+
+          <h2 style="color: red;">ACESSO NEGADO!</h2>
+          <h3 style="padding-block: 1em;">Apenas clientes podem agendar um horário</h3>
+          
+          <a href="http://localhost:8000/horarios">
+            <button class="btn btn-outline-dark">Voltar à página de horários</button>
+          </a>
+
+        </div>
+
+      </div>
+
+    {% else %}
+
+      <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;            
+      ">
+        <div style="text-align: center; padding-block: 10%;">
+
+          <h2 style="color: red;">ACESSO NEGADO!</h2>
+          <h3 style="padding-block: 1em;">Faça login para poder agendar um horário</h3>
+          
+          <a href="http://localhost:8000/login">
+            <button class="btn btn-outline-dark">Fazer login</button>
+          </a>
+
+        </div>
+
+      </div>
+
     {% endif %}
   </body>
 </html>
