@@ -1,14 +1,14 @@
-from types import NoneType
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Horario, Usuario
 from django.views.generic import FormView
 from .forms import CriaHorarioForm, SolicitaHorarioForm
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 
 
 def horarios(request):
+
   usuario = request.user
   hor_disp = []
   hor_agendados = []
@@ -18,9 +18,12 @@ def horarios(request):
       usuario = Usuario.objects.get(usuario=usuario)  
 
   for h in horarios:
+
     if h.qtVagas >= 1:
-      if not h.cliente:
-        hor_disp.append(h)    
+
+      if not h.cliente:        
+        hor_disp.append(h)  
+
       else:
         hor_agendados.append(h) 
 
@@ -28,12 +31,17 @@ def horarios(request):
 
 
 def horario(request, pk):
+
   usuario = request.user
   horario = Horario.objects.get(id=pk)
   horarios_cod = Horario.objects.filter(cod=horario.cod)
-  if usuario.is_authenticated:            
+
+  if usuario.is_authenticated:  
+
     usuario = Usuario.objects.get(usuario=usuario)  
+
     if usuario.tipo_usuario == 'C':
+
       if not horario.cliente:
         horario.cliente=usuario
         horario.save()
@@ -41,6 +49,7 @@ def horario(request, pk):
           h.qtVagas-=1
           h.save() 
         return HttpResponseRedirect(reverse('horarios_user'))
+
       else:
         horario.cliente=None  
         horario.save()
@@ -48,7 +57,8 @@ def horario(request, pk):
           h.qtVagas+=1
           h.save()   
         return HttpResponseRedirect(reverse('horarios'))
-    else:
+
+    elif usuario.tipo_usuario == 'O':      
       horario.delete()
       return HttpResponseRedirect(reverse('horarios'))
 
@@ -60,8 +70,10 @@ class CriaHorarioView(FormView):
   def get(self, request):
 
     usuario = self.request.user
+
     if usuario.is_authenticated:
         usuario = Usuario.objects.get(usuario = usuario)
+
     return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
 
   def form_valid(self, form):
@@ -69,6 +81,7 @@ class CriaHorarioView(FormView):
     usuario = self.request.user  
 
     if usuario.is_authenticated:
+
       usuario = Usuario.objects.get(usuario = usuario)
       dados = form.clean()
       dataInicio=dados['dataInicio']
@@ -80,24 +93,29 @@ class CriaHorarioView(FormView):
       cod=int(datetime.utcnow().timestamp())
 
       while dataF<=dataFim:
+
         horario = Horario(criador=usuario, dataInicio=dataI, dataFim=dataF, duracao=duracao, qtVagas=qtVagas, cod=cod)
         horario.save()
         dataI=dataF
         dataF=dataI+timedelta(minutes=duracao)
 
-      return super().form_valid(form)
+    return super().form_valid(form)
 
   def get_success_url(self):
         return reverse('horarios')
 
 def horarios_user(request):
+
   usuario = request.user
   horarios_user = []
   horarios = Horario.objects.order_by('dataInicio')
 
-  if usuario.is_authenticated:            
+  if usuario.is_authenticated:  
+
       usuario = Usuario.objects.get(usuario=usuario)  
+
       for h in horarios:
+
         if h.cliente == usuario:
           horarios_user.append(h)    
 
@@ -111,6 +129,7 @@ class SolicitaHorarioView(FormView):
   def get(self, request):
 
     usuario = self.request.user
+
     if usuario.is_authenticated:
         usuario = Usuario.objects.get(usuario = usuario)
     return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
@@ -128,16 +147,15 @@ class SolicitaHorarioView(FormView):
       dados = form.clean()
       data_solicitada=dados['data_solicitada']
       sugestao = datetime(year=9999, month=1, day=1)
+
       for h in horarios:
+
         if h.dataInicio.date() == data_solicitada.date():
           solicitacoes.append(h)
+
         elif h.dataInicio.date() > data_solicitada.date():
           if h.dataInicio.date() <= sugestao.date():
             sugestao=h.dataInicio 
             sugestoes.append(h)            
 
-      return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })
-
-
-         
-    # return super().form_valid(form)
+    return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })

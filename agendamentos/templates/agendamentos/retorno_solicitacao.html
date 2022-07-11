@@ -24,7 +24,7 @@
         aria-label="Main navigation"
       >
         <div class="container-fluid">
-          <a class="navbar-brand">{{ usuario.nome }}</a>
+          <a class="navbar-brand" href="http://localhost:8000/horarios">{{ usuario.nome }}</a>
           <div
             class="navbar-collapse offcanvas-collapse"
             id="navbarsExampleDefault"
@@ -194,6 +194,26 @@
           </div>
         </main>
 
+      {% else %}
+
+      <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;            
+      ">
+        <div style="text-align: center; padding-block: 10%;">
+
+          <h3>Horário não encontrado!</h3>
+          <h3 style="padding-block: 1em;">Não há horários disponíveis após essa data</h3>
+
+          <a href="http://localhost:8000/solicitacao">
+            <button class="btn btn-outline-dark">Tentar outra data</button>
+          </a>
+
+        </div>
+
+      </div>
+
       {% endif %}
 
     {% elif usuario.tipo_usuario == 'O' %}
@@ -216,7 +236,7 @@
 
       </div>
 
-    <!-- {% else %}
+    {% else %}
 
       <div style="
       display: flex;
@@ -234,7 +254,7 @@
 
         </div>
 
-      </div> -->
+      </div>
 
     {% endif %}
   </body>

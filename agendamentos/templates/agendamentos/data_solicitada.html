@@ -19,8 +19,6 @@
   </head>
   <body class="bg-light">
 
-    {% if usuario.tipo_usuario == 'C' %}
-
       <div class="row">
 
         <div class="col-md-4 mx-auto">
@@ -37,48 +35,6 @@
         </div>
 
       </div>
-
-    {% elif usuario.tipo_usuario == 'O' %}
-      
-      <div style="
-      display: flex;
-      justify-content: center;
-      align-items: center;            
-      ">
-        <div style="text-align: center; padding-block: 10%;">
-
-          <h2 style="color: red;">ACESSO NEGADO!</h2>
-          <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
-          
-          <a href="http://localhost:8000/horarios">
-            <button class="btn btn-outline-dark">Voltar à página de horários</button>
-          </a>
-
-        </div>
-
-      </div>
-
-    {% else %}
-
-      <div style="
-      display: flex;
-      justify-content: center;
-      align-items: center;            
-      ">
-        <div style="text-align: center; padding-block: 10%;">
-
-          <h2 style="color: red;">ACESSO NEGADO!</h2>
-          <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
-          
-          <a href="http://localhost:8000/login">
-            <button class="btn btn-outline-dark">Fazer login</button>
-          </a>
-
-        </div>
-
-      </div>
-
-    {% endif %}
 
   </body>
 </html>

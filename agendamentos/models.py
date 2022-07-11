@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 class Usuario(models.Model):
+
   usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
   nome = models.CharField(max_length=150)
   cpf = models.CharField('CPF : Somente números', max_length=14, unique=True, blank=True, null=True)
@@ -15,6 +16,7 @@ class Usuario(models.Model):
       return self.nome
 
 class Horario(models.Model):
+  
   criador = models.ForeignKey(Usuario, related_name='operador_criou', on_delete=models.CASCADE)
   cliente = models.ForeignKey(Usuario, related_name='usuario_agendou', on_delete=models.CASCADE, default=None, null=True, blank=True)
   dataInicio = models.DateTimeField()
