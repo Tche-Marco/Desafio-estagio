@@ -25,6 +25,18 @@ O servidor estará disponível em:
 http://localhost:8000
 ```
 
+Login usuário Operador
+```console
+usuário: operador 
+senha: admin@123
+```
+
+Login usuário Cliente
+```console
+usuário: marco 
+senha: admin@123
+```
+
 ## Exemplo de rota
 
-http://localhost:8000/horarios/
+http://localhost:8000/login/
