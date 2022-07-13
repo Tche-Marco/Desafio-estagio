@@ -13,6 +13,20 @@ Crie e habilite um ambiente python
   . venv/bin/activate | linux e macOs
 ```
 
+Instale o Django
+```console
+  pip install django==3.2
+```
+
+Instale o aplicativo Django-crispy-forms
+```console
+  pip install django-crispy-forms
+```
+Instale a biblioteca psycopg2
+```console
+  pip install psycopg2 
+```
+
 ## Uso
 
 Rode o servidor:
