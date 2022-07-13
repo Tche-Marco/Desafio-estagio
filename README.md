@@ -22,21 +22,9 @@ python manage.py runserver
 
 O servidor estará disponível em: 
 ```console
-http://localhost:8000
-```
-
-Login usuário Operador
-```console
-usuário: operador 
-senha: admin@123
-```
-
-Login usuário Cliente
-```console
-usuário: marco 
-senha: admin@123
+http://localhost:8000/login/
 ```
 
 ## Exemplo de rota
 
-http://localhost:8000/login/
+http://localhost:8000/horarios/
