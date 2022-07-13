@@ -3,8 +3,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import Horario, Usuario
 from django.views.generic import FormView
-from .forms import CriaHorarioForm, SolicitaHorarioForm
+from .forms import CriaHorarioForm, SolicitaHorarioForm, CriaUserForm
 from datetime import datetime, timedelta
+from django.contrib.auth.models import User
 
 
 def horarios(request):
@@ -159,3 +160,31 @@ class SolicitaHorarioView(FormView):
             sugestoes.append(h)            
 
     return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })
+
+class CriaHorarioView(FormView):
+
+  template_name = 'agendamentos/user_cadastro.html'
+  form_class = CriaUserForm
+
+  def get(self, request):
+
+    return render (request, self.template_name, {'form' : self.form_class })
+
+  def form_valid(self, form):
+
+    dados = form.clean()
+    username=dados['username']
+    nome = dados['nome']
+    cpf = dados['cpf']
+    tipo_usuario = dados['tipo_usuario']
+    senha = dados['senha']
+    
+    user = User.objects.create_user(username, None, senha)
+    user.save()
+    usuario = Usuario(usuario = user, nome = nome, cpf = cpf, tipo_usuario = tipo_usuario)
+    usuario.save()
+
+    return super().form_valid(form)
+
+  def get_success_url(self):
+        return reverse('login')
