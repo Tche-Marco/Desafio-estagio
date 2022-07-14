@@ -16,6 +16,7 @@ class CriaHorarioForm(forms.Form):
     dataFim = dados.get('dataFim')
     duracao = dados.get('duracao')
 
+    
     if dataFim <= dataInicio:
       self.add_error('dataFim', 'A data final deve ser maior que a inicial')
     elif dataFim < dataInicio+timedelta(minutes=duracao):
