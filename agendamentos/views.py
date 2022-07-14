@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from .models import Horario, Usuario
 from django.views.generic import FormView
-from .forms import CriaHorarioForm, SolicitaHorarioForm, CriaUserForm
+from .forms import CriaHorarioForm, SolicitaHorarioForm, CriaUsuarioForm
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 
@@ -15,20 +15,20 @@ def horarios(request):
   hor_agendados = []
   horarios = Horario.objects.order_by('dataInicio')
 
-  if usuario.is_authenticated:            
-      usuario = Usuario.objects.get(usuario=usuario)  
+  if usuario.is_authenticated:  
+
+    usuario = Usuario.objects.get(usuario=usuario)    
 
   for h in horarios:
 
-    if h.qtVagas >= 1:
-
-      if not h.cliente:        
+    if not h.cliente:   
+      if h.qtVagas >= 1:     
         hor_disp.append(h)  
 
-      else:
-        hor_agendados.append(h) 
+    else:
+      hor_agendados.append(h) 
 
-  return render(request, 'agendamentos/horarios.html', {'horarios_agendados' : hor_agendados,'horarios_disp' : hor_disp, 'usuario' : usuario})
+  return render(request, 'agendamentos/horarios.html', {'horarios_agendados' : hor_agendados, 'horarios_disp' : hor_disp, 'usuario' : usuario})
 
 
 def horario(request, pk):
@@ -168,11 +168,11 @@ class SolicitaHorarioView(FormView):
 class CriaUsuarioView(FormView):
 
   template_name = 'agendamentos/user_cadastro.html'
-  form_class = CriaUserForm
+  form_class = CriaUsuarioForm
 
   def get(self, request):
 
-    return render (request, self.template_name, {'form' : self.form_class })
+    return render (request, self.template_name, {'form' : self.form_class})
 
   def form_valid(self, form):
 
@@ -191,4 +191,4 @@ class CriaUsuarioView(FormView):
     return super().form_valid(form)
 
   def get_success_url(self):
-        return reverse('login')
+    return reverse('login')

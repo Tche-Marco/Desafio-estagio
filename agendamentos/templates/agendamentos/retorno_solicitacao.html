@@ -24,12 +24,12 @@
         aria-label="Main navigation"
       >
         <div class="container-fluid">
-          <a class="navbar-brand" href="http://127.0.0.1:8000/horarios">{{ usuario.nome }}</a>
+          <a class="navbar-brand" href="{% url 'horarios' %}">{{ usuario.nome }}</a>
           <div
             class="navbar-collapse offcanvas-collapse"
             id="navbarsExampleDefault"
           ></div>
-          <a href="http://127.0.0.1:8000/logout"
+          <a href="{% url 'logout' %}"
             ><button class="btn btn-outline-light" type="submit">Sair</button></a
           >
         </div>
@@ -42,7 +42,7 @@
             <a class="nav-link active" aria-current="page" href="#"
               >Horários disponíveis no dia solicitado</a
             >
-            <a class="nav-link" href="http://127.0.0.1:8000/horarios/user"
+            <a class="nav-link" href="{% url 'horarios_user' %}"
               >Meus agendamentos</a
             >
           </nav>
@@ -63,7 +63,7 @@
               class="navbar-collapse offcanvas-collapse"
               id="navbarsExampleDefault"
             ></div>
-            <a href="http://127.0.0.1:8000/horarios">
+            <a href="{% url 'horarios' %}">
               <button
                 class="btn btn-outline-light"
                 style="padding: 0.31em; width: 10em; font-size: small"
@@ -100,7 +100,7 @@
                   id="navbarsExampleDefault"
                 ></div>
 
-                <a href="http://127.0.0.1:8000/horario/{{ h.id }}">
+                <a href="{% url 'horario' h.id %}">
                   <button
                     class="btn btn-outline-success"
                     style="width: max-content; font-size: small"
@@ -120,7 +120,7 @@
             <a class="nav-link active" aria-current="page" href="#"
               >Horários disponíveis mais próximos ao dia solicitado</a
             >
-            <a class="nav-link" href="http://127.0.0.1:8000/horarios/user"
+            <a class="nav-link" href="{% url 'horarios_user' %}"
               >Meus agendamentos</a
             >
           </nav>
@@ -141,7 +141,7 @@
               class="navbar-collapse offcanvas-collapse"
               id="navbarsExampleDefault"
             ></div>
-            <a href="http://127.0.0.1:8000/horarios">
+            <a href="{% url 'horarios' %}">
               <button
                 class="btn btn-outline-light"
                 style="padding: 0.31em; width: 10em; font-size: small"
@@ -178,7 +178,7 @@
                   class="navbar-collapse offcanvas-collapse"
                   id="navbarsExampleDefault"
                 ></div>    
-                <a href="http://127.0.0.1:8000/horario/{{ h.id }}">
+                <a href="{% url 'horario' h.id %}">
                   <button
                     class="btn btn-outline-success"
                     style="width: max-content; font-size: small"
@@ -206,7 +206,7 @@
           <h3>Horário não encontrado!</h3>
           <h3 style="padding-block: 1em;">Não há horários disponíveis após essa data</h3>
 
-          <a href="http://127.0.0.1:8000/solicitacao">
+          <a href="{% url 'solicitacaoHorario' %}">
             <button class="btn btn-outline-dark">Tentar outra data</button>
           </a>
 
@@ -228,7 +228,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/horarios">
+          <a href="{% url 'horarios' %}">
             <button class="btn btn-outline-dark">Voltar à página de horários</button>
           </a>
 
@@ -248,7 +248,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/login">
+          <a href="{% url 'login' %}">
             <button class="btn btn-outline-dark">Fazer login</button>
           </a>
 

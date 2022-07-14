@@ -27,14 +27,14 @@
 
         <div class="container-fluid">
           
-          <a class="navbar-brand" href="http://127.0.0.1:8000/horarios">{{ usuario.nome }}</a>
+          <a class="navbar-brand" href="{% url 'horarios' %}">{{ usuario.nome }}</a>
 
           <div
             class="navbar-collapse offcanvas-collapse"
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/logout"
+          <a href="{% url 'logout' %}"
             ><button class="btn btn-outline-light" type="submit">Sair</button></a
           >
 
@@ -49,7 +49,7 @@
           <a class="nav-link active" aria-current="page" href="#">
             Meus agendamentos
           </a>
-          <a class="nav-link" href="http://127.0.0.1:8000/horarios">
+          <a class="nav-link" href="{% url 'horarios' %}">
             Horários de atendimento disponíveis
           </a>
 
@@ -111,7 +111,7 @@
                   id="navbarsExampleDefault"
                 ></div>
 
-                <a href="http://127.0.0.1:8000/horario/{{ h.id }}">
+                <a href="{% url 'horario' h.id %}">
 
                   <button
                     class="btn btn-outline-danger"
@@ -149,7 +149,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Apenas clientes podem agendar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/horarios">
+          <a href="{% url 'horarios' %}">
             <button class="btn btn-outline-dark">Voltar à página de horários</button>
           </a>
 
@@ -169,7 +169,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Faça login para poder agendar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/login">
+          <a href="{% url 'login' %}">
             <button class="btn btn-outline-dark">Fazer login</button>
           </a>
 

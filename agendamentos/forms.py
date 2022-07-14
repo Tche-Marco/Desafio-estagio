@@ -43,7 +43,7 @@ class SolicitaHorarioForm(forms.Form):
     return dados
 
 
-class CriaUserForm(forms.Form):
+class CriaUsuarioForm(forms.Form):
 
   tipos_usuario = (
     ('C', 'Cliente'),
@@ -65,7 +65,6 @@ class CriaUserForm(forms.Form):
     senha = dados.get('senha')
     confirmar_senha = dados.get('confirmar_senha')
 
-
     for u in Usuario.objects.all():
       if u.usuario.username == username:
         self.add_error('username', 'Esse username já está em uso')   
@@ -84,5 +83,4 @@ class CriaUserForm(forms.Form):
     if senha != confirmar_senha:
       self.add_error('confirmar_senha', 'As senhas devem ser iguais')
       
-          
     return dados

@@ -31,7 +31,7 @@
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/logout"
+          <a href="{% url 'logout' %}"
             ><button class="btn btn-outline-light" type="submit">Sair</button>
           </a>
 
@@ -45,7 +45,7 @@
           <a class="nav-link active" aria-current="page" href="#"
             >Agenda de atendimentos</a
           >
-          <a class="nav-link" href="http://127.0.0.1:8000/cadastro"
+          <a class="nav-link" href="{% url 'cadastrar_horario' %}"
             >Adicionar horários</a
           >
         </nav>
@@ -71,7 +71,7 @@
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/cadastro">
+          <a href="{% url 'cadastrar_horario' %}">
 
             <button
               class="btn btn-outline-light"
@@ -116,7 +116,7 @@
                   id="navbarsExampleDefault"
                 ></div>
 
-                <a href="http://127.0.0.1:8000/horario/{{ h.id }}">
+                <a href="{% url 'horario' h.id %}">
                   <button
                     type="submit"
                     class="btn btn-outline-danger"
@@ -186,14 +186,14 @@
       >
         <div class="container-fluid">
 
-          <a class="navbar-brand" href="http://127.0.0.1:8000/horarios/user">{{ usuario.nome }}</a>
+          <a class="navbar-brand" href="{% url 'horarios_user' %}">{{ usuario.nome }}</a>
 
           <div
             class="navbar-collapse offcanvas-collapse"
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/logout">
+          <a href="{% url 'logout' %}">
             <button class="btn btn-outline-light" type="submit">
               Sair
             </button>
@@ -211,7 +211,7 @@
             Horários de atendimento disponíveis
           </a>
 
-          <a class="nav-link" href="http://127.0.0.1:8000/horarios/user">
+          <a class="nav-link" href="{% url 'horarios_user' %}">
             Meus agendamentos
           </a>
 
@@ -240,7 +240,7 @@
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/solicitacao">
+          <a href="{% url 'solicitacaoHorario' %}">
 
             <button
               class="btn btn-outline-light"
@@ -289,7 +289,7 @@
                   id="navbarsExampleDefault"
                 ></div>
 
-                <a href="http://127.0.0.1:8000/horario/{{ h.id }}">
+                <a href="{% url 'horario' h.id %}">
 
                   <button
                     class="btn btn-outline-success"
@@ -330,7 +330,7 @@
             id="navbarsExampleDefault"
           ></div>
 
-          <a href="http://127.0.0.1:8000/login">
+          <a href="{% url 'login' %}">
             <button class="btn btn-outline-light" type="submit">
               Fazer Login
             </button>
@@ -394,7 +394,7 @@
                   id="navbarsExampleDefault"
                 ></div>
 
-                <a href="http://127.0.0.1:8000/login">
+                <a href="{% url 'login' %}">
 
                   <button
                     class="btn btn-outline-success"

@@ -50,7 +50,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/horarios">
+          <a href="{% url 'horarios' %}">
             <button class="btn btn-outline-dark">Voltar à página de horários</button>
           </a>
 
@@ -70,7 +70,7 @@
           <h2 style="color: red;">ACESSO NEGADO!</h2>
           <h3 style="padding-block: 1em;">Você não possui permissão para buscar um horário</h3>
           
-          <a href="http://127.0.0.1:8000/login">
+          <a href="{% url 'login' %}">
             <button class="btn btn-outline-dark">Fazer login</button>
           </a>
 

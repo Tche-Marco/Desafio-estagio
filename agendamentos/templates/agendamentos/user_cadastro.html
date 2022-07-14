@@ -24,12 +24,12 @@
 
         <hr style="margin-bottom: 2em" />
 
-        <form action="." method="POST">
+        <form method="POST">
           {% csrf_token %} {{ form|crispy }}
 
           <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
           <h6 style="margin-top: 0.4em;">
-            <a href="http://127.0.0.1:8000/login" style="text-decoration: none"
+            <a href="{% url 'login' %}" style="text-decoration: none"
               >Fazer login</a
             >
           </h6>
