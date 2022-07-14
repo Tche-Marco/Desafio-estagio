@@ -19,20 +19,22 @@
   <body>
     <div class="row">
       <div class="col-md-4 mx-auto">
+
         <h3 style="text-align: center">Autenticação</h3>
         <hr />
+        
         <form action="." method="POST">
-
-          {% csrf_token %} 
-          {{ form|crispy }}
-
-          <h6 style="margin-top: 0.3em;">
-            <a href="http://localhost:8000/cadastro/conta" style="text-decoration: none; opacity: 0.8;"
+          {% csrf_token %} {{ form|crispy }}
+          <h6 style="margin-top: 0.3em">
+            <a
+              href="http://localhost:8000/cadastro/conta"
+              style="text-decoration: none; opacity: 0.8"
               >Criar conta</a
             >
           </h6>
           <button type="submit" class="btn btn-light mt-3">Entrar</button>
         </form>
+
       </div>
     </div>
   </body>

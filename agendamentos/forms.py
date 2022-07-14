@@ -1,7 +1,6 @@
-from xml.dom import domreg
 from django import forms
 from datetime import timedelta, datetime
-from .models import User, Usuario
+from .models import Usuario
 
 class CriaHorarioForm(forms.Form):
 
@@ -27,6 +26,7 @@ class CriaHorarioForm(forms.Form):
 
     return dados
 
+
 class SolicitaHorarioForm(forms.Form):
 
   data_solicitada = forms.DateTimeField(label='Data que deseja marcar seu atendimento', help_text='dia/mês/ano hora:minuto')
@@ -40,6 +40,7 @@ class SolicitaHorarioForm(forms.Form):
       self.add_error('data_solicitada', 'A data solicitada não pode ser anterior à hoje')
 
     return dados
+
 
 class CriaUserForm(forms.Form):
 

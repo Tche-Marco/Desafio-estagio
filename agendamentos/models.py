@@ -14,6 +14,7 @@ class Usuario(models.Model):
 
   def __str__(self):
       return self.nome
+      
 
 class Horario(models.Model):
   

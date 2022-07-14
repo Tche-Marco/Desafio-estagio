@@ -63,6 +63,7 @@ def horario(request, pk):
       horario.delete()
       return HttpResponseRedirect(reverse('horarios'))
 
+
 class CriaHorarioView(FormView):
 
   template_name = 'agendamentos/cadastro.html'
@@ -105,6 +106,7 @@ class CriaHorarioView(FormView):
   def get_success_url(self):
         return reverse('horarios')
 
+
 def horarios_user(request):
 
   usuario = request.user
@@ -121,6 +123,7 @@ def horarios_user(request):
           horarios_user.append(h)    
 
   return render(request, 'agendamentos/horarios_user.html', {'horarios_user' : horarios_user, 'usuario' : usuario})
+
 
 class SolicitaHorarioView(FormView):
 
@@ -160,6 +163,7 @@ class SolicitaHorarioView(FormView):
             sugestoes.append(h)            
 
     return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })
+
 
 class CriaHorarioView(FormView):
 
