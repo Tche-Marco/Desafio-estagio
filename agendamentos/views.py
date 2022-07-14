@@ -165,7 +165,7 @@ class SolicitaHorarioView(FormView):
     return render(self.request, 'agendamentos/retorno_solicitacao.html', {'usuario' : usuario, 'solicitacoes' : solicitacoes, 'sugestoes' : sugestoes })
 
 
-class CriaHorarioView(FormView):
+class CriaUsuarioView(FormView):
 
   template_name = 'agendamentos/user_cadastro.html'
   form_class = CriaUserForm
