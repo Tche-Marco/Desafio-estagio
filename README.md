@@ -42,6 +42,14 @@ Exemplo de Configuração
 ```
 ## Uso
 
+Passe os modelos para o banco de dados:
+```console
+python manage.py makemigrations
+```
+```console
+python manage.py migrate
+```
+
 Rode o servidor:
 ```console
 python manage.py runserver
