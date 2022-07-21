@@ -1,3 +1,4 @@
+from http import client
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -19,12 +20,16 @@ class Usuario(models.Model):
 class Horario(models.Model):
   
   criador = models.ForeignKey(Usuario, related_name='operador_criou', on_delete=models.CASCADE)
-  cliente = models.ForeignKey(Usuario, related_name='usuario_agendou', on_delete=models.CASCADE, default=None, null=True, blank=True)
+  cliente = models.ManyToManyField(Usuario, related_name='horarios', default=None, blank=True)
   dataInicio = models.DateTimeField()
   dataFim = models.DateTimeField(blank=True, null=True) 
   duracao = models.IntegerField('Duração por atendimento')
   qtVagas = models.IntegerField('Quantidade de vagas por dia')
-  cod = models.IntegerField(null=True)
   
+  def contains(self, user):
+    for c in self.cliente:
+      if c == user:
+        return True
+
   def __str__(self):
-      return str(self.cod)
+      return str(self.dataInicio)

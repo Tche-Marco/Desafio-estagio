@@ -147,25 +147,27 @@
           {% if horarios_agendados %} 
 
             {% for h in horarios_agendados %}
+              {% for c in h.cliente.all %}
 
-              <div class="d-flex text-muted pt-3">
-                <p class="pb-3 mb-0 small lh-sm" style="color: black">
-                  <strong
-                    class="d-block text-gray-dark"
-                    style="
-                      text-decoration: none;
-                      font-size: 1.036em;
-                      font-weight: bolder;
-                      width: 50em;
-                      padding-bottom: 0.4em;
-                    "
-                  >
-                    {{ h.dataInicio }}
-                  </strong>
-                  {{ h.duracao }} minutos de duração
-                </p>
-              </div>
+                <div class="d-flex text-muted pt-3">
+                  <p class="pb-3 mb-0 small lh-sm" style="color: black;">
+                    <strong
+                      class="d-block text-gray-dark"
+                      style="
+                        text-decoration: none;
+                        font-size: 1.036em;
+                        font-weight: bolder;
+                        width: 50em;
+                        padding-bottom: 0.4em;
+                      "
+                    >
+                      {{ h.dataInicio }} - {{ h.duracao }} minutos de duração
+                    </strong>
+                    {{ c.nome }}  
+                  </p>
+                </div>
 
+              {% endfor %}
             {% endfor %} 
 
           {% else %}

@@ -7,7 +7,7 @@ class CriaHorarioForm(forms.Form):
   dataInicio = forms.DateTimeField(label='Data inicial da agenda de atendimento', help_text='dia/mês/ano hora:minuto')
   dataFim = forms.DateTimeField(label='Data final da agenda de atendimento', help_text='dia/mês/ano hora:minuto')
   duracao = forms.IntegerField(label='Duração por atendimento', help_text='minutos')
-  qtVagas = forms.IntegerField(label='Quantidade de vagas disponíveis por dia', min_value=1)
+  qtVagas = forms.IntegerField(label='Quantidade de atendentes (Guichê de atendimento)', min_value=1)
 
   def clean(self):
 

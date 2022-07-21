@@ -19,14 +19,28 @@ def horarios(request):
 
     usuario = Usuario.objects.get(usuario=usuario)    
 
-  for h in horarios:
+    for h in horarios:
 
-    if not h.cliente:   
-      if h.qtVagas >= 1:     
+      if h.cliente.all(): #se o horário já estiver sido agendado por alguém 
+        hor_agendados.append(h) 
+        if h.qtVagas>0: #se o horário estiver disponível 
+          if not usuario in h.cliente.all() and usuario.tipo_usuario == 'C': #se o usuário não estiver marcado esse horário e for cliente
+            hor_disp.append(h)   
+          else:
+            hor_disp.append(h)   
+      else:
+        hor_disp.append(h)            
+
+  else:
+
+    for h in horarios:
+
+      if h.cliente.all(): #se o horário já estiver sido agendado por alguém    
+        if h.qtVagas>0: #se o horário estiver disponível 
+            hor_disp.append(h)    
+      else: #se o horário não possuir algum agendamento
         hor_disp.append(h)  
 
-    else:
-      hor_agendados.append(h) 
 
   return render(request, 'agendamentos/horarios.html', {'horarios_agendados' : hor_agendados, 'horarios_disp' : hor_disp, 'usuario' : usuario})
 
@@ -35,7 +49,6 @@ def horario(request, pk):
 
   usuario = request.user
   horario = Horario.objects.get(id=pk)
-  horarios_cod = Horario.objects.filter(cod=horario.cod)
 
   if usuario.is_authenticated:  
 
@@ -43,22 +56,18 @@ def horario(request, pk):
 
     if usuario.tipo_usuario == 'C':
 
-      if not horario.cliente:
-        horario.cliente=usuario
+      if usuario in horario.cliente.all(): #se o usuário tiver como cliente
+        horario.cliente.remove(usuario.id)
+        horario.qtVagas+=1
         horario.save()
-        for h in horarios_cod:
-          h.qtVagas-=1
-          h.save() 
-        return HttpResponseRedirect(reverse('horarios_user'))
-
-      else:
-        horario.cliente=None  
-        horario.save()
-        for h in horarios_cod:
-          h.qtVagas+=1
-          h.save()   
         return HttpResponseRedirect(reverse('horarios'))
 
+      elif horario.qtVagas>0: #se o horário estiver disponível para agendamento
+        horario.cliente.add(usuario)
+        horario.qtVagas-=1
+        horario.save()
+        return HttpResponseRedirect(reverse('horarios_user'))     
+        
     elif usuario.tipo_usuario == 'O':      
       horario.delete()
       return HttpResponseRedirect(reverse('horarios'))
@@ -70,7 +79,6 @@ class CriaHorarioView(FormView):
   form_class = CriaHorarioForm
 
   def get(self, request):
-
     usuario = self.request.user
 
     if usuario.is_authenticated:
@@ -78,12 +86,11 @@ class CriaHorarioView(FormView):
 
     return render (request, self.template_name, {'usuario' : usuario, 'form' : self.form_class })
 
+ 
   def form_valid(self, form):
-
     usuario = self.request.user  
 
     if usuario.is_authenticated:
-
       usuario = Usuario.objects.get(usuario = usuario)
       dados = form.clean()
       dataInicio=dados['dataInicio']
@@ -92,11 +99,9 @@ class CriaHorarioView(FormView):
       qtVagas=dados['qtVagas']
       dataI=dataInicio
       dataF=dataInicio+timedelta(minutes=duracao)
-      cod=int(datetime.utcnow().timestamp())
 
       while dataF<=dataFim:
-
-        horario = Horario(criador=usuario, dataInicio=dataI, dataFim=dataF, duracao=duracao, qtVagas=qtVagas, cod=cod)
+        horario = Horario(criador=usuario, dataInicio=dataI, dataFim=dataF, duracao=duracao, qtVagas=qtVagas)
         horario.save()
         dataI=dataF
         dataF=dataI+timedelta(minutes=duracao)
@@ -110,17 +115,11 @@ class CriaHorarioView(FormView):
 def horarios_user(request):
 
   usuario = request.user
-  horarios_user = []
-  horarios = Horario.objects.order_by('dataInicio')
 
   if usuario.is_authenticated:  
 
-      usuario = Usuario.objects.get(usuario=usuario)  
-
-      for h in horarios:
-
-        if h.cliente == usuario:
-          horarios_user.append(h)    
+    usuario = Usuario.objects.get(usuario=usuario)  
+    horarios_user = usuario.horarios.all()
 
   return render(request, 'agendamentos/horarios_user.html', {'horarios_user' : horarios_user, 'usuario' : usuario})
 
