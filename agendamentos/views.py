@@ -26,7 +26,7 @@ def horarios(request):
         if h.qtVagas>0: #se o horário estiver disponível 
           if not usuario in h.cliente.all() and usuario.tipo_usuario == 'C': #se o usuário não estiver marcado esse horário e for cliente
             hor_disp.append(h)   
-          else:
+          elif usuario.tipo_usuario == 'O':
             hor_disp.append(h)   
       else:
         hor_disp.append(h)            
@@ -119,7 +119,7 @@ def horarios_user(request):
   if usuario.is_authenticated:  
 
     usuario = Usuario.objects.get(usuario=usuario)  
-    horarios_user = usuario.horarios.all()
+    horarios_user = usuario.horarios.order_by('dataInicio')
 
   return render(request, 'agendamentos/horarios_user.html', {'horarios_user' : horarios_user, 'usuario' : usuario})
 

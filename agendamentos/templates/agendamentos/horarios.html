@@ -108,7 +108,7 @@
                   >
                     {{ h.dataInicio }}
                   </strong>
-                  {{ h.duracao }} minutos de duração
+                  {{ h.duracao }} minutos de duração - Vagas disponíveis para esse horário: {{ h.qtVagas }}
                 </p>
 
                 <div
@@ -281,8 +281,9 @@
                   >
                     {{ h.dataInicio }}
                   </strong>
-
-                  {{ h.duracao }} minutos de duração
+                  {{ h.duracao }} minutos de duração                  
+                  <br>
+                  Vagas disponíveis: {{ h.qtVagas }}
 
                 </p>
 
@@ -290,7 +291,7 @@
                   class="navbar-collapse offcanvas-collapse"
                   id="navbarsExampleDefault"
                 ></div>
-
+              
                 <a href="{% url 'horario' h.id %}">
 
                   <button
